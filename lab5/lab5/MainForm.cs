@@ -334,10 +334,6 @@ namespace LSystemApp
                 e.Graphics.FillEllipse(dot, points[0].X - 3f, points[0].Y - 3f, 6, 6);
                 e.Graphics.FillEllipse(dot, points[points.Length - 1].X - 3f,
                                        points[points.Length - 1].Y - 3f, 6, 6);
-                {
-                    if (seg.Length >= 2)
-                        e.Graphics.DrawLines(pen, seg);
-                }
             }
         }
 
