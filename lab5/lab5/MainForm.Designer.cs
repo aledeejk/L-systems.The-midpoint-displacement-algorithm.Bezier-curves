@@ -15,207 +15,416 @@
 
         private void InitializeComponent()
         {
-            this.tabControl = new System.Windows.Forms.TabControl();
-            this.tabPageLSystem = new System.Windows.Forms.TabPage();
-            this.panelCanvas = new System.Windows.Forms.Panel();
-            this.panelControls = new System.Windows.Forms.Panel();
-            this.lblInfo = new System.Windows.Forms.Label();
-            this.btnRedraw = new System.Windows.Forms.Button();
-            this.btnLoad = new System.Windows.Forms.Button();
-            this.numRandom = new System.Windows.Forms.NumericUpDown();
-            this.lblRandom = new System.Windows.Forms.Label();
-            this.chkRandom = new System.Windows.Forms.CheckBox();
-            this.numIterations = new System.Windows.Forms.NumericUpDown();
-            this.lblIterations = new System.Windows.Forms.Label();
-            this.cmbPresets = new System.Windows.Forms.ComboBox();
-            this.lblPreset = new System.Windows.Forms.Label();
-            this.tabPageMidpoint = new System.Windows.Forms.TabPage();
-            this.tabPageBezier = new System.Windows.Forms.TabPage();
-            this.tabControl.SuspendLayout();
-            this.tabPageLSystem.SuspendLayout();
-            this.panelControls.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRandom)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numIterations)).BeginInit();
-            this.SuspendLayout();
+            tabControl = new TabControl();
+            tabPageLSystem = new TabPage();
+            panelCanvas = new Panel();
+            panelControls = new Panel();
+            lblInfo = new Label();
+            btnRedraw = new Button();
+            btnLoad = new Button();
+            numRandom = new NumericUpDown();
+            lblRandom = new Label();
+            chkRandom = new CheckBox();
+            numIterations = new NumericUpDown();
+            lblIterations = new Label();
+            cmbPresets = new ComboBox();
+            lblPreset = new Label();
+            tabPageMidpoint = new TabPage();
+            panelMidCanvas = new Panel();
+            panelMidpointControls = new Panel();
+            numMidEndPoint = new NumericUpDown();
+            numMidStartPoint = new NumericUpDown();
+            labelMidEndPoint = new Label();
+            labelMidStartPoint = new Label();
+            lblMidInfo = new Label();
+            btnMidRun = new Button();
+            btnMidStep = new Button();
+            btnMidReset = new Button();
+            labelSeed = new Label();
+            numMidSeed = new NumericUpDown();
+            numMidIterations = new NumericUpDown();
+            labelIterations = new Label();
+            numRoughness = new NumericUpDown();
+            labelRoughness = new Label();
+            tabPageBezier = new TabPage();
+            tabControl.SuspendLayout();
+            tabPageLSystem.SuspendLayout();
+            panelControls.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numRandom).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numIterations).BeginInit();
+            tabPageMidpoint.SuspendLayout();
+            panelMidpointControls.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numMidEndPoint).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numMidStartPoint).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numMidSeed).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numMidIterations).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numRoughness).BeginInit();
+            SuspendLayout();
             // 
             // tabControl
             // 
-            this.tabControl.Controls.Add(this.tabPageLSystem);
-            this.tabControl.Controls.Add(this.tabPageMidpoint);
-            this.tabControl.Controls.Add(this.tabPageBezier);
-            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl.Location = new System.Drawing.Point(0, 0);
-            this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1000, 750);
-            this.tabControl.TabIndex = 0;
+            tabControl.Controls.Add(tabPageLSystem);
+            tabControl.Controls.Add(tabPageMidpoint);
+            tabControl.Controls.Add(tabPageBezier);
+            tabControl.Dock = DockStyle.Fill;
+            tabControl.Location = new Point(0, 0);
+            tabControl.Margin = new Padding(3, 4, 3, 4);
+            tabControl.Name = "tabControl";
+            tabControl.SelectedIndex = 0;
+            tabControl.Size = new Size(1000, 938);
+            tabControl.TabIndex = 0;
             // 
             // tabPageLSystem
             // 
-            this.tabPageLSystem.Controls.Add(this.panelCanvas);
-            this.tabPageLSystem.Controls.Add(this.panelControls);
-            this.tabPageLSystem.Location = new System.Drawing.Point(4, 25);
-            this.tabPageLSystem.Name = "tabPageLSystem";
-            this.tabPageLSystem.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageLSystem.Size = new System.Drawing.Size(992, 721);
-            this.tabPageLSystem.TabIndex = 0;
-            this.tabPageLSystem.Text = "L-системы";
-            this.tabPageLSystem.UseVisualStyleBackColor = true;
+            tabPageLSystem.Controls.Add(panelCanvas);
+            tabPageLSystem.Controls.Add(panelControls);
+            tabPageLSystem.Location = new Point(4, 29);
+            tabPageLSystem.Margin = new Padding(3, 4, 3, 4);
+            tabPageLSystem.Name = "tabPageLSystem";
+            tabPageLSystem.Padding = new Padding(3, 4, 3, 4);
+            tabPageLSystem.Size = new Size(992, 905);
+            tabPageLSystem.TabIndex = 0;
+            tabPageLSystem.Text = "L-системы";
+            tabPageLSystem.UseVisualStyleBackColor = true;
             // 
             // panelCanvas
             // 
-            this.panelCanvas.BackColor = System.Drawing.Color.White;
-            this.panelCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelCanvas.Location = new System.Drawing.Point(3, 63);
-            this.panelCanvas.Name = "panelCanvas";
-            this.panelCanvas.Size = new System.Drawing.Size(986, 655);
-            this.panelCanvas.TabIndex = 1;
+            panelCanvas.BackColor = Color.White;
+            panelCanvas.Dock = DockStyle.Fill;
+            panelCanvas.Location = new Point(3, 79);
+            panelCanvas.Margin = new Padding(3, 4, 3, 4);
+            panelCanvas.Name = "panelCanvas";
+            panelCanvas.Size = new Size(986, 822);
+            panelCanvas.TabIndex = 1;
             // 
             // panelControls
             // 
-            this.panelControls.Controls.Add(this.lblInfo);
-            this.panelControls.Controls.Add(this.btnRedraw);
-            this.panelControls.Controls.Add(this.btnLoad);
-            this.panelControls.Controls.Add(this.numRandom);
-            this.panelControls.Controls.Add(this.lblRandom);
-            this.panelControls.Controls.Add(this.chkRandom);
-            this.panelControls.Controls.Add(this.numIterations);
-            this.panelControls.Controls.Add(this.lblIterations);
-            this.panelControls.Controls.Add(this.cmbPresets);
-            this.panelControls.Controls.Add(this.lblPreset);
-            this.panelControls.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelControls.Location = new System.Drawing.Point(3, 3);
-            this.panelControls.Name = "panelControls";
-            this.panelControls.Size = new System.Drawing.Size(986, 60);
-            this.panelControls.TabIndex = 0;
+            panelControls.Controls.Add(lblInfo);
+            panelControls.Controls.Add(btnRedraw);
+            panelControls.Controls.Add(btnLoad);
+            panelControls.Controls.Add(numRandom);
+            panelControls.Controls.Add(lblRandom);
+            panelControls.Controls.Add(chkRandom);
+            panelControls.Controls.Add(numIterations);
+            panelControls.Controls.Add(lblIterations);
+            panelControls.Controls.Add(cmbPresets);
+            panelControls.Controls.Add(lblPreset);
+            panelControls.Dock = DockStyle.Top;
+            panelControls.Location = new Point(3, 4);
+            panelControls.Margin = new Padding(3, 4, 3, 4);
+            panelControls.Name = "panelControls";
+            panelControls.Size = new Size(986, 75);
+            panelControls.TabIndex = 0;
+            panelControls.Paint += panelControls_Paint;
             // 
             // lblInfo
             // 
-            this.lblInfo.AutoSize = true;
-            this.lblInfo.Location = new System.Drawing.Point(850, 22);
-            this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(55, 16);
-            this.lblInfo.TabIndex = 9;
-            this.lblInfo.Text = "Готово";
+            lblInfo.AutoSize = true;
+            lblInfo.Location = new Point(850, 28);
+            lblInfo.Name = "lblInfo";
+            lblInfo.Size = new Size(57, 20);
+            lblInfo.TabIndex = 9;
+            lblInfo.Text = "Готово";
             // 
             // btnRedraw
             // 
-            this.btnRedraw.Location = new System.Drawing.Point(720, 15);
-            this.btnRedraw.Name = "btnRedraw";
-            this.btnRedraw.Size = new System.Drawing.Size(120, 30);
-            this.btnRedraw.TabIndex = 8;
-            this.btnRedraw.Text = "Перерисовать";
-            this.btnRedraw.UseVisualStyleBackColor = true;
+            btnRedraw.Location = new Point(720, 19);
+            btnRedraw.Margin = new Padding(3, 4, 3, 4);
+            btnRedraw.Name = "btnRedraw";
+            btnRedraw.Size = new Size(120, 38);
+            btnRedraw.TabIndex = 8;
+            btnRedraw.Text = "Перерисовать";
+            btnRedraw.UseVisualStyleBackColor = true;
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(560, 15);
-            this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(150, 30);
-            this.btnLoad.TabIndex = 7;
-            this.btnLoad.Text = "Загрузить из файла...";
-            this.btnLoad.UseVisualStyleBackColor = true;
+            btnLoad.Location = new Point(560, 19);
+            btnLoad.Margin = new Padding(3, 4, 3, 4);
+            btnLoad.Name = "btnLoad";
+            btnLoad.Size = new Size(150, 38);
+            btnLoad.TabIndex = 7;
+            btnLoad.Text = "Загрузить из файла...";
+            btnLoad.UseVisualStyleBackColor = true;
             // 
             // numRandom
             // 
-            this.numRandom.Enabled = false;
-            this.numRandom.Location = new System.Drawing.Point(490, 18);
-            this.numRandom.Name = "numRandom";
-            this.numRandom.Size = new System.Drawing.Size(60, 22);
-            this.numRandom.TabIndex = 6;
-            this.numRandom.Value = new decimal(new int[] { 20, 0, 0, 0 });
+            numRandom.Enabled = false;
+            numRandom.Location = new Point(490, 22);
+            numRandom.Margin = new Padding(3, 4, 3, 4);
+            numRandom.Name = "numRandom";
+            numRandom.Size = new Size(60, 27);
+            numRandom.TabIndex = 6;
+            numRandom.Value = new decimal(new int[] { 20, 0, 0, 0 });
             // 
             // lblRandom
             // 
-            this.lblRandom.AutoSize = true;
-            this.lblRandom.Location = new System.Drawing.Point(460, 22);
-            this.lblRandom.Name = "lblRandom";
-            this.lblRandom.Size = new System.Drawing.Size(20, 16);
-            this.lblRandom.TabIndex = 5;
-            this.lblRandom.Text = "%";
+            lblRandom.AutoSize = true;
+            lblRandom.Location = new Point(460, 28);
+            lblRandom.Name = "lblRandom";
+            lblRandom.Size = new Size(21, 20);
+            lblRandom.TabIndex = 5;
+            lblRandom.Text = "%";
             // 
             // chkRandom
             // 
-            this.chkRandom.AutoSize = true;
-            this.chkRandom.Location = new System.Drawing.Point(350, 20);
-            this.chkRandom.Name = "chkRandom";
-            this.chkRandom.Size = new System.Drawing.Size(110, 20);
-            this.chkRandom.TabIndex = 4;
-            this.chkRandom.Text = "Случайность";
-            this.chkRandom.UseVisualStyleBackColor = true;
+            chkRandom.AutoSize = true;
+            chkRandom.Location = new Point(350, 25);
+            chkRandom.Margin = new Padding(3, 4, 3, 4);
+            chkRandom.Name = "chkRandom";
+            chkRandom.Size = new Size(119, 24);
+            chkRandom.TabIndex = 4;
+            chkRandom.Text = "Случайность";
+            chkRandom.UseVisualStyleBackColor = true;
             // 
             // numIterations
             // 
-            this.numIterations.Location = new System.Drawing.Point(280, 18);
-            this.numIterations.Maximum = new decimal(new int[] { 8, 0, 0, 0 });
-            this.numIterations.Name = "numIterations";
-            this.numIterations.Size = new System.Drawing.Size(60, 22);
-            this.numIterations.TabIndex = 3;
-            this.numIterations.Value = new decimal(new int[] { 4, 0, 0, 0 });
+            numIterations.Location = new Point(280, 22);
+            numIterations.Margin = new Padding(3, 4, 3, 4);
+            numIterations.Maximum = new decimal(new int[] { 8, 0, 0, 0 });
+            numIterations.Name = "numIterations";
+            numIterations.Size = new Size(60, 27);
+            numIterations.TabIndex = 3;
+            numIterations.Value = new decimal(new int[] { 4, 0, 0, 0 });
             // 
             // lblIterations
             // 
-            this.lblIterations.AutoSize = true;
-            this.lblIterations.Location = new System.Drawing.Point(190, 22);
-            this.lblIterations.Name = "lblIterations";
-            this.lblIterations.Size = new System.Drawing.Size(80, 16);
-            this.lblIterations.TabIndex = 2;
-            this.lblIterations.Text = "Итераций:";
+            lblIterations.AutoSize = true;
+            lblIterations.Location = new Point(190, 28);
+            lblIterations.Name = "lblIterations";
+            lblIterations.Size = new Size(81, 20);
+            lblIterations.TabIndex = 2;
+            lblIterations.Text = "Итераций:";
             // 
             // cmbPresets
             // 
-            this.cmbPresets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbPresets.FormattingEnabled = true;
-            this.cmbPresets.Location = new System.Drawing.Point(70, 18);
-            this.cmbPresets.Name = "cmbPresets";
-            this.cmbPresets.Size = new System.Drawing.Size(110, 24);
-            this.cmbPresets.TabIndex = 1;
+            cmbPresets.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbPresets.FormattingEnabled = true;
+            cmbPresets.Location = new Point(70, 22);
+            cmbPresets.Margin = new Padding(3, 4, 3, 4);
+            cmbPresets.Name = "cmbPresets";
+            cmbPresets.Size = new Size(110, 28);
+            cmbPresets.TabIndex = 1;
             // 
             // lblPreset
             // 
-            this.lblPreset.AutoSize = true;
-            this.lblPreset.Location = new System.Drawing.Point(10, 22);
-            this.lblPreset.Name = "lblPreset";
-            this.lblPreset.Size = new System.Drawing.Size(55, 16);
-            this.lblPreset.TabIndex = 0;
-            this.lblPreset.Text = "Шаблон:";
+            lblPreset.AutoSize = true;
+            lblPreset.Location = new Point(10, 28);
+            lblPreset.Name = "lblPreset";
+            lblPreset.Size = new Size(69, 20);
+            lblPreset.TabIndex = 0;
+            lblPreset.Text = "Шаблон:";
             // 
             // tabPageMidpoint
             // 
-            this.tabPageMidpoint.Location = new System.Drawing.Point(4, 25);
-            this.tabPageMidpoint.Name = "tabPageMidpoint";
-            this.tabPageMidpoint.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMidpoint.Size = new System.Drawing.Size(992, 721);
-            this.tabPageMidpoint.TabIndex = 1;
-            this.tabPageMidpoint.Text = "Midpoint displacement";
-            this.tabPageMidpoint.UseVisualStyleBackColor = true;
+            tabPageMidpoint.Controls.Add(panelMidCanvas);
+            tabPageMidpoint.Controls.Add(panelMidpointControls);
+            tabPageMidpoint.Location = new Point(4, 29);
+            tabPageMidpoint.Margin = new Padding(3, 4, 3, 4);
+            tabPageMidpoint.Name = "tabPageMidpoint";
+            tabPageMidpoint.Padding = new Padding(3, 4, 3, 4);
+            tabPageMidpoint.Size = new Size(992, 905);
+            tabPageMidpoint.TabIndex = 1;
+            tabPageMidpoint.Text = "Midpoint displacement";
+            tabPageMidpoint.UseVisualStyleBackColor = true;
+            // 
+            // panelMidCanvas
+            // 
+            panelMidCanvas.Dock = DockStyle.Fill;
+            panelMidCanvas.Location = new Point(3, 113);
+            panelMidCanvas.Name = "panelMidCanvas";
+            panelMidCanvas.Size = new Size(986, 788);
+            panelMidCanvas.TabIndex = 1;
+            // 
+            // panelMidpointControls
+            // 
+            panelMidpointControls.Controls.Add(numMidEndPoint);
+            panelMidpointControls.Controls.Add(numMidStartPoint);
+            panelMidpointControls.Controls.Add(labelMidEndPoint);
+            panelMidpointControls.Controls.Add(labelMidStartPoint);
+            panelMidpointControls.Controls.Add(lblMidInfo);
+            panelMidpointControls.Controls.Add(btnMidRun);
+            panelMidpointControls.Controls.Add(btnMidStep);
+            panelMidpointControls.Controls.Add(btnMidReset);
+            panelMidpointControls.Controls.Add(labelSeed);
+            panelMidpointControls.Controls.Add(numMidSeed);
+            panelMidpointControls.Controls.Add(numMidIterations);
+            panelMidpointControls.Controls.Add(labelIterations);
+            panelMidpointControls.Controls.Add(numRoughness);
+            panelMidpointControls.Controls.Add(labelRoughness);
+            panelMidpointControls.Dock = DockStyle.Top;
+            panelMidpointControls.Location = new Point(3, 4);
+            panelMidpointControls.Name = "panelMidpointControls";
+            panelMidpointControls.Size = new Size(986, 109);
+            panelMidpointControls.TabIndex = 0;
+            // 
+            // numMidEndPoint
+            // 
+            numMidEndPoint.DecimalPlaces = 2;
+            numMidEndPoint.Increment = new decimal(new int[] { 5, 0, 0, 131072 });
+            numMidEndPoint.Location = new Point(852, 17);
+            numMidEndPoint.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
+            numMidEndPoint.Name = "numMidEndPoint";
+            numMidEndPoint.Size = new Size(80, 27);
+            numMidEndPoint.TabIndex = 13;
+            numMidEndPoint.Value = new decimal(new int[] { 5, 0, 0, 65536 });
+            // 
+            // numMidStartPoint
+            // 
+            numMidStartPoint.DecimalPlaces = 2;
+            numMidStartPoint.Increment = new decimal(new int[] { 5, 0, 0, 131072 });
+            numMidStartPoint.Location = new Point(645, 17);
+            numMidStartPoint.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
+            numMidStartPoint.Name = "numMidStartPoint";
+            numMidStartPoint.Size = new Size(80, 27);
+            numMidStartPoint.TabIndex = 12;
+            numMidStartPoint.Value = new decimal(new int[] { 5, 0, 0, 65536 });
+            // 
+            // labelMidEndPoint
+            // 
+            labelMidEndPoint.AutoSize = true;
+            labelMidEndPoint.Location = new Point(731, 19);
+            labelMidEndPoint.Name = "labelMidEndPoint";
+            labelMidEndPoint.Size = new Size(115, 20);
+            labelMidEndPoint.TabIndex = 11;
+            labelMidEndPoint.Text = "Высота справа:";
+            // 
+            // labelMidStartPoint
+            // 
+            labelMidStartPoint.AutoSize = true;
+            labelMidStartPoint.Location = new Point(534, 19);
+            labelMidStartPoint.Name = "labelMidStartPoint";
+            labelMidStartPoint.Size = new Size(105, 20);
+            labelMidStartPoint.TabIndex = 10;
+            labelMidStartPoint.Text = "Высота слева:";
+            labelMidStartPoint.Click += labelMidStartPoint_Click;
+            // 
+            // lblMidInfo
+            // 
+            lblMidInfo.AutoSize = true;
+            lblMidInfo.Location = new Point(586, 74);
+            lblMidInfo.Name = "lblMidInfo";
+            lblMidInfo.Size = new Size(74, 20);
+            lblMidInfo.TabIndex = 9;
+            lblMidInfo.Text = "Шаг: 0 / 8";
+            // 
+            // btnMidRun
+            // 
+            btnMidRun.Location = new Point(365, 68);
+            btnMidRun.Name = "btnMidRun";
+            btnMidRun.Size = new Size(192, 32);
+            btnMidRun.TabIndex = 8;
+            btnMidRun.Text = "Выполнить до конца";
+            btnMidRun.UseVisualStyleBackColor = true;
+            // 
+            // btnMidStep
+            // 
+            btnMidStep.Location = new Point(157, 68);
+            btnMidStep.Name = "btnMidStep";
+            btnMidStep.Size = new Size(192, 32);
+            btnMidStep.TabIndex = 7;
+            btnMidStep.Text = "Следующий шаг";
+            btnMidStep.UseVisualStyleBackColor = true;
+            // 
+            // btnMidReset
+            // 
+            btnMidReset.Location = new Point(12, 68);
+            btnMidReset.Name = "btnMidReset";
+            btnMidReset.Size = new Size(128, 32);
+            btnMidReset.TabIndex = 6;
+            btnMidReset.Text = "Сбросить";
+            btnMidReset.UseVisualStyleBackColor = true;
+            // 
+            // labelSeed
+            // 
+            labelSeed.AutoSize = true;
+            labelSeed.Location = new Point(397, 19);
+            labelSeed.Name = "labelSeed";
+            labelSeed.Size = new Size(45, 20);
+            labelSeed.TabIndex = 5;
+            labelSeed.Text = "Seed:";
+            // 
+            // numMidSeed
+            // 
+            numMidSeed.Location = new Point(448, 17);
+            numMidSeed.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+            numMidSeed.Name = "numMidSeed";
+            numMidSeed.Size = new Size(80, 27);
+            numMidSeed.TabIndex = 4;
+            // 
+            // numMidIterations
+            // 
+            numMidIterations.Location = new Point(311, 17);
+            numMidIterations.Maximum = new decimal(new int[] { 12, 0, 0, 0 });
+            numMidIterations.Name = "numMidIterations";
+            numMidIterations.Size = new Size(80, 27);
+            numMidIterations.TabIndex = 3;
+            numMidIterations.Value = new decimal(new int[] { 8, 0, 0, 0 });
+            // 
+            // labelIterations
+            // 
+            labelIterations.AutoSize = true;
+            labelIterations.Location = new Point(224, 19);
+            labelIterations.Name = "labelIterations";
+            labelIterations.Size = new Size(81, 20);
+            labelIterations.TabIndex = 2;
+            labelIterations.Text = "Итераций:";
+            // 
+            // numRoughness
+            // 
+            numRoughness.DecimalPlaces = 1;
+            numRoughness.Increment = new decimal(new int[] { 1, 0, 0, 65536 });
+            numRoughness.Location = new Point(138, 17);
+            numRoughness.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
+            numRoughness.Name = "numRoughness";
+            numRoughness.Size = new Size(80, 27);
+            numRoughness.TabIndex = 1;
+            numRoughness.Value = new decimal(new int[] { 7, 0, 0, 65536 });
+            // 
+            // labelRoughness
+            // 
+            labelRoughness.AutoSize = true;
+            labelRoughness.Location = new Point(12, 19);
+            labelRoughness.Name = "labelRoughness";
+            labelRoughness.Size = new Size(120, 20);
+            labelRoughness.TabIndex = 0;
+            labelRoughness.Text = "Шероховатость:";
             // 
             // tabPageBezier
             // 
-            this.tabPageBezier.Location = new System.Drawing.Point(4, 25);
-            this.tabPageBezier.Name = "tabPageBezier";
-            this.tabPageBezier.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageBezier.Size = new System.Drawing.Size(992, 721);
-            this.tabPageBezier.TabIndex = 2;
-            this.tabPageBezier.Text = "Кривые Безье";
-            this.tabPageBezier.UseVisualStyleBackColor = true;
+            tabPageBezier.Location = new Point(4, 29);
+            tabPageBezier.Margin = new Padding(3, 4, 3, 4);
+            tabPageBezier.Name = "tabPageBezier";
+            tabPageBezier.Padding = new Padding(3, 4, 3, 4);
+            tabPageBezier.Size = new Size(992, 905);
+            tabPageBezier.TabIndex = 2;
+            tabPageBezier.Text = "Кривые Безье";
+            tabPageBezier.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1000, 750);
-            this.Controls.Add(this.tabControl);
-            this.Name = "MainForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Компьютерная графика — фракталы и кривые";
-            this.tabControl.ResumeLayout(false);
-            this.tabPageLSystem.ResumeLayout(false);
-            this.panelControls.ResumeLayout(false);
-            this.panelControls.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRandom)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numIterations)).EndInit();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1000, 938);
+            Controls.Add(tabControl);
+            Margin = new Padding(3, 4, 3, 4);
+            Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Компьютерная графика — фракталы и кривые";
+            tabControl.ResumeLayout(false);
+            tabPageLSystem.ResumeLayout(false);
+            panelControls.ResumeLayout(false);
+            panelControls.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numRandom).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numIterations).EndInit();
+            tabPageMidpoint.ResumeLayout(false);
+            panelMidpointControls.ResumeLayout(false);
+            panelMidpointControls.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numMidEndPoint).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numMidStartPoint).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numMidSeed).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numMidIterations).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numRoughness).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion
@@ -237,5 +446,21 @@
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.Button btnRedraw;
         private System.Windows.Forms.Label lblInfo;
+        private Panel panelMidpointControls;
+        private NumericUpDown numRoughness;
+        private Label labelRoughness;
+        private NumericUpDown numMidIterations;
+        private Label labelIterations;
+        private Button btnMidRun;
+        private Button btnMidStep;
+        private Button btnMidReset;
+        private Label labelSeed;
+        private NumericUpDown numMidSeed;
+        private Label lblMidInfo;
+        private Panel panelMidCanvas;
+        private Label labelMidEndPoint;
+        private Label labelMidStartPoint;
+        private NumericUpDown numMidStartPoint;
+        private NumericUpDown numMidEndPoint;
     }
 }
