@@ -14,6 +14,10 @@ namespace LSystemApp
         private int _iterations = 4;
         private double _randomness = 0.0;
 
+        //============Бочарова 1.б========================
+        private TurtleInterpreter _lastInterp;
+        //================================================
+
         // ── Встроенные предустановки (из лекции) ────────────────────────
         private readonly Dictionary<string, string> _presets = new Dictionary<string, string>
         {
@@ -96,6 +100,8 @@ namespace LSystemApp
                 Redraw();
             };
 
+            chkTreeStyle.CheckedChanged += (s, e) => Redraw();
+
             numRandom.ValueChanged += (s, e) =>
             {
                 _randomness = (double)numRandom.Value / 100.0;
@@ -120,7 +126,6 @@ namespace LSystemApp
             };
             _midpoint.Reset(_midpointSeed);
 
-            // Подписки
             numMidIterations.ValueChanged += (s, e) => { _midpoint.MaxLevels = (int)numMidIterations.Value; ResetMidpoint(false); };
             numRoughness.ValueChanged += (s, e) => { _midpoint.Roughness = (float)numRoughness.Value; ResetMidpoint(false); };
             numMidSeed.ValueChanged += (s, e) => { _midpointSeed = (int)numMidSeed.Value; ResetMidpoint(false); };
@@ -185,6 +190,7 @@ namespace LSystemApp
 
             var interp = new TurtleInterpreter(_system, step: 1.0);
             interp.Interpret(command);
+            _lastInterp = interp;
 
             _segments = interp.FitToBounds(panelCanvas.ClientRectangle, 15f);
 
@@ -197,17 +203,55 @@ namespace LSystemApp
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.Clear(Color.White);
 
+
+            //============Бочарова========================
+            if (chkTreeStyle.Checked && _lastInterp != null)
+                DrawStyledTree(e.Graphics);
+            else
+                DrawPlain(e.Graphics);
+        }
+
+        private void DrawPlain(Graphics g)
+        {
             using (var pen = new Pen(Color.FromArgb(135, 206, 235), 1.5f))
             {
                 foreach (var seg in _segments)
-                {
                     if (seg.Length >= 2)
-                        e.Graphics.DrawLines(pen, seg);
-                }
+                        g.DrawLines(pen, seg);
             }
         }
 
-        //============Бочарова========================
+        private void DrawStyledTree(Graphics g)
+        {
+            int maxDepth = Math.Max(1, _lastInterp.MaxDepth);
+            const float baseWidth = 4.0f;
+            const float tipWidth = 0.6f;
+            Color baseColor = Color.FromArgb(101, 67, 33);   // коричневый
+            Color tipColor = Color.FromArgb(34, 139, 34);   // зелёный
+
+            int count = Math.Min(_segments.Count, _lastInterp.Depths.Count);
+            for (int i = 0; i < count; i++)
+            {
+                var seg = _segments[i];
+                if (seg.Length < 2) continue;
+
+                float t = _lastInterp.Depths[i] / (float)maxDepth;  // 0 = ствол, 1 = кончик
+                float width = baseWidth + (tipWidth - baseWidth) * t;
+                Color color = LerpColor(baseColor, tipColor, t);
+
+                using (var pen = new Pen(color, width) { StartCap = LineCap.Round, EndCap = LineCap.Round })
+                    g.DrawLines(pen, seg);
+            }
+        }
+
+        private static Color LerpColor(Color a, Color b, float t)
+        {
+            t = Math.Clamp(t, 0f, 1f);
+            return Color.FromArgb(
+                (int)(a.R + (b.R - a.R) * t),
+                (int)(a.G + (b.G - a.G) * t),
+                (int)(a.B + (b.B - a.B) * t));
+        }
 
         private void panelControls_Paint(object sender, PaintEventArgs e)
         {

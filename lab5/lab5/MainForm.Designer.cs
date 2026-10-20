@@ -19,6 +19,7 @@
             tabPageLSystem = new TabPage();
             panelCanvas = new Panel();
             panelControls = new Panel();
+            chkTreeStyle = new CheckBox();
             lblInfo = new Label();
             btnRedraw = new Button();
             btnLoad = new Button();
@@ -91,14 +92,15 @@
             // 
             panelCanvas.BackColor = Color.White;
             panelCanvas.Dock = DockStyle.Fill;
-            panelCanvas.Location = new Point(3, 79);
+            panelCanvas.Location = new Point(3, 108);
             panelCanvas.Margin = new Padding(3, 4, 3, 4);
             panelCanvas.Name = "panelCanvas";
-            panelCanvas.Size = new Size(986, 822);
+            panelCanvas.Size = new Size(986, 793);
             panelCanvas.TabIndex = 1;
             // 
             // panelControls
             // 
+            panelControls.Controls.Add(chkTreeStyle);
             panelControls.Controls.Add(lblInfo);
             panelControls.Controls.Add(btnRedraw);
             panelControls.Controls.Add(btnLoad);
@@ -113,14 +115,24 @@
             panelControls.Location = new Point(3, 4);
             panelControls.Margin = new Padding(3, 4, 3, 4);
             panelControls.Name = "panelControls";
-            panelControls.Size = new Size(986, 75);
+            panelControls.Size = new Size(986, 104);
             panelControls.TabIndex = 0;
             panelControls.Paint += panelControls_Paint;
+            // 
+            // chkTreeStyle
+            // 
+            chkTreeStyle.AutoSize = true;
+            chkTreeStyle.Location = new Point(629, 18);
+            chkTreeStyle.Name = "chkTreeStyle";
+            chkTreeStyle.Size = new Size(206, 24);
+            chkTreeStyle.TabIndex = 10;
+            chkTreeStyle.Text = "Стилизовать дерево (1.б)";
+            chkTreeStyle.UseVisualStyleBackColor = true;
             // 
             // lblInfo
             // 
             lblInfo.AutoSize = true;
-            lblInfo.Location = new Point(850, 28);
+            lblInfo.Location = new Point(399, 71);
             lblInfo.Name = "lblInfo";
             lblInfo.Size = new Size(57, 20);
             lblInfo.TabIndex = 9;
@@ -128,20 +140,20 @@
             // 
             // btnRedraw
             // 
-            btnRedraw.Location = new Point(720, 19);
+            btnRedraw.Location = new Point(237, 62);
             btnRedraw.Margin = new Padding(3, 4, 3, 4);
             btnRedraw.Name = "btnRedraw";
-            btnRedraw.Size = new Size(120, 38);
+            btnRedraw.Size = new Size(128, 38);
             btnRedraw.TabIndex = 8;
             btnRedraw.Text = "Перерисовать";
             btnRedraw.UseVisualStyleBackColor = true;
             // 
             // btnLoad
             // 
-            btnLoad.Location = new Point(560, 19);
+            btnLoad.Location = new Point(10, 62);
             btnLoad.Margin = new Padding(3, 4, 3, 4);
             btnLoad.Name = "btnLoad";
-            btnLoad.Size = new Size(150, 38);
+            btnLoad.Size = new Size(192, 38);
             btnLoad.TabIndex = 7;
             btnLoad.Text = "Загрузить из файла...";
             btnLoad.UseVisualStyleBackColor = true;
@@ -149,7 +161,7 @@
             // numRandom
             // 
             numRandom.Enabled = false;
-            numRandom.Location = new Point(490, 22);
+            numRandom.Location = new Point(534, 18);
             numRandom.Margin = new Padding(3, 4, 3, 4);
             numRandom.Name = "numRandom";
             numRandom.Size = new Size(60, 27);
@@ -159,7 +171,7 @@
             // lblRandom
             // 
             lblRandom.AutoSize = true;
-            lblRandom.Location = new Point(460, 28);
+            lblRandom.Location = new Point(507, 22);
             lblRandom.Name = "lblRandom";
             lblRandom.Size = new Size(21, 20);
             lblRandom.TabIndex = 5;
@@ -168,7 +180,7 @@
             // chkRandom
             // 
             chkRandom.AutoSize = true;
-            chkRandom.Location = new Point(350, 25);
+            chkRandom.Location = new Point(382, 21);
             chkRandom.Margin = new Padding(3, 4, 3, 4);
             chkRandom.Name = "chkRandom";
             chkRandom.Size = new Size(119, 24);
@@ -178,7 +190,7 @@
             // 
             // numIterations
             // 
-            numIterations.Location = new Point(280, 22);
+            numIterations.Location = new Point(305, 20);
             numIterations.Margin = new Padding(3, 4, 3, 4);
             numIterations.Maximum = new decimal(new int[] { 8, 0, 0, 0 });
             numIterations.Name = "numIterations";
@@ -189,7 +201,7 @@
             // lblIterations
             // 
             lblIterations.AutoSize = true;
-            lblIterations.Location = new Point(190, 28);
+            lblIterations.Location = new Point(218, 22);
             lblIterations.Name = "lblIterations";
             lblIterations.Size = new Size(81, 20);
             lblIterations.TabIndex = 2;
@@ -199,7 +211,7 @@
             // 
             cmbPresets.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbPresets.FormattingEnabled = true;
-            cmbPresets.Location = new Point(70, 22);
+            cmbPresets.Location = new Point(85, 19);
             cmbPresets.Margin = new Padding(3, 4, 3, 4);
             cmbPresets.Name = "cmbPresets";
             cmbPresets.Size = new Size(110, 28);
@@ -208,7 +220,7 @@
             // lblPreset
             // 
             lblPreset.AutoSize = true;
-            lblPreset.Location = new Point(10, 28);
+            lblPreset.Location = new Point(10, 22);
             lblPreset.Name = "lblPreset";
             lblPreset.Size = new Size(69, 20);
             lblPreset.TabIndex = 0;
@@ -462,5 +474,6 @@
         private Label labelMidStartPoint;
         private NumericUpDown numMidStartPoint;
         private NumericUpDown numMidEndPoint;
+        private CheckBox chkTreeStyle;
     }
 }

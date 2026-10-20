@@ -22,6 +22,12 @@ namespace LSystemApp
 
         public List<PointF[]> Segments { get; } = new List<PointF[]>();
 
+        //============Бочарова 1.б========================
+        public List<int> Depths { get; } = new List<int>(); // глубина каждого отрезка
+        public int MaxDepth { get; private set; } = 0;
+
+        //================================================
+
         public TurtleInterpreter(LSystem system, double step = 1.0)
         {
             _system = system;
@@ -31,6 +37,10 @@ namespace LSystemApp
         public void Interpret(string command)
         {
             Segments.Clear();
+            //============Бочарова 1.б========================
+            Depths.Clear();
+            MaxDepth = 0;
+            //================================================
 
             double angleRad = _system.Angle * Math.PI / 180.0;
             double randomFactor = _system.Randomness;
@@ -58,6 +68,10 @@ namespace LSystemApp
                                 new PointF((float)x, (float)y),
                                 new PointF((float)nx, (float)ny)
                             });
+                            //============Бочарова 1.б========================
+                            Depths.Add(stack.Count); // фиксируем глубину отрезка, чтобы определить толщину и цвет
+                            if (stack.Count > MaxDepth) MaxDepth = stack.Count;
+                            //================================================
                             x = nx; y = ny;
                             break;
                         }
