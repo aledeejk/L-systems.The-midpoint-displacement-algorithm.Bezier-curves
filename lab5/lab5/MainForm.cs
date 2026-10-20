@@ -18,6 +18,10 @@ namespace LSystemApp
         private TurtleInterpreter _lastInterp;
         //================================================
 
+        // Переменные для 3 (Безье) 
+        private List<PointF> _bezierPoints = new List<PointF>();
+        private int _draggingBezierPointIndex = -1;
+
         // ── Встроенные предустановки (из лекции) ────────────────────────
         private readonly Dictionary<string, string> _presets = new Dictionary<string, string>
         {
@@ -85,7 +89,7 @@ namespace LSystemApp
                 cmbPresets.Items.Add(key);
             cmbPresets.SelectedIndex = 0;
 
-            // ── Подписки на события ────────────────────────────────────
+            // ── Подписки на события для L-систем ───────────────────────
             cmbPresets.SelectedIndexChanged += (s, e) => LoadPreset();
 
             numIterations.ValueChanged += (s, e) =>
@@ -114,6 +118,12 @@ namespace LSystemApp
             panelCanvas.Paint += Canvas_Paint;
             panelCanvas.Resize += (s, e) => Redraw();
 
+            //  Подписки на события для Безье 
+            panelBezierCanvas.Paint += PanelBezierCanvas_Paint;
+            panelBezierCanvas.MouseDown += PanelBezierCanvas_MouseDown;
+            panelBezierCanvas.MouseMove += PanelBezierCanvas_MouseMove;
+            panelBezierCanvas.MouseUp += PanelBezierCanvas_MouseUp;
+
             LoadPreset();
 
             //============Бочарова========================
@@ -140,6 +150,8 @@ namespace LSystemApp
             RedrawMidpoint();
             //============================================
         }
+
+        // МЕТОДЫ ДЛЯ L-СИСТЕМ 
 
         private void LoadPreset()
         {
@@ -198,7 +210,7 @@ namespace LSystemApp
             panelCanvas.Invalidate();
         }
 
-        private void Canvas_Paint(object sender, PaintEventArgs e)
+        private void Canvas_Paint(object? sender, PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.Clear(Color.White);
@@ -322,7 +334,105 @@ namespace LSystemApp
                 e.Graphics.FillEllipse(dot, points[0].X - 3f, points[0].Y - 3f, 6, 6);
                 e.Graphics.FillEllipse(dot, points[points.Length - 1].X - 3f,
                                        points[points.Length - 1].Y - 3f, 6, 6);
+                {
+                    if (seg.Length >= 2)
+                        e.Graphics.DrawLines(pen, seg);
+                }
             }
+        }
+
+        // ЛОГИКА ДЛЯ КРИВЫХ БЕЗЬЕ 
+
+        private void PanelBezierCanvas_Paint(object? sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            // 1. Рисуем пунктирные линии между точками 
+            if (_bezierPoints.Count > 1)
+            {
+                using (Pen dashedPen = new Pen(Color.LightGray, 1))
+                {
+                    dashedPen.DashStyle = DashStyle.Dash;
+                    for (int i = 0; i < _bezierPoints.Count - 1; i++)
+                    {
+                        g.DrawLine(dashedPen, _bezierPoints[i], _bezierPoints[i + 1]);
+                    }
+                }
+            }
+
+            // 2. Рисуем саму кривую Безье
+            if (_bezierPoints.Count >= 4)
+            {
+                using (Pen curvePen = new Pen(Color.Blue, 3))
+                {
+                    for (int i = 0; i <= _bezierPoints.Count - 4; i++)
+                    {
+                        g.DrawBezier(curvePen, _bezierPoints[i], _bezierPoints[i + 1], _bezierPoints[i + 2], _bezierPoints[i + 3]);
+                    }
+                }
+            }
+            else if (_bezierPoints.Count > 1)
+            {
+                using (Pen simplePen = new Pen(Color.Blue, 2))
+                {
+                    for (int i = 0; i < _bezierPoints.Count - 1; i++)
+                    {
+                        g.DrawLine(simplePen, _bezierPoints[i], _bezierPoints[i + 1]);
+                    }
+                }
+            }
+
+            // 3. Рисуем сами опорные точки
+            foreach (PointF p in _bezierPoints)
+            {
+                g.FillEllipse(Brushes.Red, p.X - 5, p.Y - 5, 10, 10);
+                g.DrawEllipse(Pens.Black, p.X - 5, p.Y - 5, 10, 10);
+            }
+        }
+
+        private void PanelBezierCanvas_MouseDown(object? sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                for (int i = 0; i < _bezierPoints.Count; i++)
+                {
+                    if (Math.Abs(_bezierPoints[i].X - e.X) < 10 && Math.Abs(_bezierPoints[i].Y - e.Y) < 10)
+                    {
+                        _draggingBezierPointIndex = i;
+                        return;
+                    }
+                }
+                _bezierPoints.Add(new PointF(e.X, e.Y));
+                panelBezierCanvas.Invalidate();
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                for (int i = 0; i < _bezierPoints.Count; i++)
+                {
+                    if (Math.Abs(_bezierPoints[i].X - e.X) < 10 && Math.Abs(_bezierPoints[i].Y - e.Y) < 10)
+                    {
+                        _bezierPoints.RemoveAt(i);
+                        _draggingBezierPointIndex = -1;
+                        panelBezierCanvas.Invalidate();
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void PanelBezierCanvas_MouseMove(object? sender, MouseEventArgs e)
+        {
+            if (_draggingBezierPointIndex != -1 && e.Button == MouseButtons.Left)
+            {
+                _bezierPoints[_draggingBezierPointIndex] = new PointF(e.X, e.Y);
+                panelBezierCanvas.Invalidate();
+            }
+        }
+
+        private void PanelBezierCanvas_MouseUp(object? sender, MouseEventArgs e)
+        {
+            _draggingBezierPointIndex = -1;
         }
 
         //============================================

@@ -48,6 +48,7 @@
             numRoughness = new NumericUpDown();
             labelRoughness = new Label();
             tabPageBezier = new TabPage();
+            panelBezierCanvas = new System.Windows.Forms.Panel();
             tabControl.SuspendLayout();
             tabPageLSystem.SuspendLayout();
             panelControls.SuspendLayout();
@@ -60,6 +61,7 @@
             ((System.ComponentModel.ISupportInitialize)numMidSeed).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numMidIterations).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numRoughness).BeginInit();
+            tabPageBezier.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl
@@ -403,14 +405,23 @@
             // 
             // tabPageBezier
             // 
-            tabPageBezier.Location = new Point(4, 29);
-            tabPageBezier.Margin = new Padding(3, 4, 3, 4);
-            tabPageBezier.Name = "tabPageBezier";
-            tabPageBezier.Padding = new Padding(3, 4, 3, 4);
-            tabPageBezier.Size = new Size(992, 905);
-            tabPageBezier.TabIndex = 2;
-            tabPageBezier.Text = "Кривые Безье";
-            tabPageBezier.UseVisualStyleBackColor = true;
+            this.tabPageBezier.Controls.Add(this.panelBezierCanvas);
+            this.tabPageBezier.Location = new System.Drawing.Point(4, 25);
+            this.tabPageBezier.Name = "tabPageBezier";
+            this.tabPageBezier.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageBezier.Size = new System.Drawing.Size(992, 721);
+            this.tabPageBezier.TabIndex = 2;
+            this.tabPageBezier.Text = "Кривые Безье";
+            this.tabPageBezier.UseVisualStyleBackColor = true;
+            // 
+            // panelBezierCanvas
+            // 
+            this.panelBezierCanvas.BackColor = System.Drawing.Color.White;
+            this.panelBezierCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelBezierCanvas.Location = new System.Drawing.Point(3, 3);
+            this.panelBezierCanvas.Name = "panelBezierCanvas";
+            this.panelBezierCanvas.Size = new System.Drawing.Size(986, 715);
+            this.panelBezierCanvas.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -436,6 +447,7 @@
             ((System.ComponentModel.ISupportInitialize)numMidSeed).EndInit();
             ((System.ComponentModel.ISupportInitialize)numMidIterations).EndInit();
             ((System.ComponentModel.ISupportInitialize)numRoughness).EndInit();
+            tabPageBezier.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -445,6 +457,7 @@
         private System.Windows.Forms.TabPage tabPageLSystem;
         private System.Windows.Forms.TabPage tabPageMidpoint;
         private System.Windows.Forms.TabPage tabPageBezier;
+        private System.Windows.Forms.Panel panelBezierCanvas;
 
         private System.Windows.Forms.Panel panelCanvas;
         private System.Windows.Forms.Panel panelControls;
