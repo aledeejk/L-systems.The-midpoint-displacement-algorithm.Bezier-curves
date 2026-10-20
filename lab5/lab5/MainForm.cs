@@ -14,6 +14,10 @@ namespace LSystemApp
         private int _iterations = 4;
         private double _randomness = 0.0;
 
+        //============Бочарова 1.б========================
+        private TurtleInterpreter _lastInterp;
+        //================================================
+
         // Переменные для 3 (Безье) 
         private List<PointF> _bezierPoints = new List<PointF>();
         private int _draggingBezierPointIndex = -1;
@@ -71,6 +75,11 @@ namespace LSystemApp
                 "X->F-[[X]+X]+F[+FX]-X"
         };
 
+        //============Бочарова========================
+        private MidpointDisplacement _midpoint;
+        private int _midpointSeed = 0;
+        //============================================
+
         public MainForm()
         {
             InitializeComponent();
@@ -95,6 +104,8 @@ namespace LSystemApp
                 Redraw();
             };
 
+            chkTreeStyle.CheckedChanged += (s, e) => Redraw();
+
             numRandom.ValueChanged += (s, e) =>
             {
                 _randomness = (double)numRandom.Value / 100.0;
@@ -114,6 +125,30 @@ namespace LSystemApp
             panelBezierCanvas.MouseUp += PanelBezierCanvas_MouseUp;
 
             LoadPreset();
+
+            //============Бочарова========================
+            _midpoint = new MidpointDisplacement(_midpointSeed)
+            {
+                MaxLevels = (int)numMidIterations.Value,
+                Roughness = (float)numRoughness.Value,
+                StartHeight = (float)numMidStartPoint.Value,
+                EndHeight = (float)numMidEndPoint.Value
+            };
+            _midpoint.Reset(_midpointSeed);
+
+            numMidIterations.ValueChanged += (s, e) => { _midpoint.MaxLevels = (int)numMidIterations.Value; ResetMidpoint(false); };
+            numRoughness.ValueChanged += (s, e) => { _midpoint.Roughness = (float)numRoughness.Value; ResetMidpoint(false); };
+            numMidSeed.ValueChanged += (s, e) => { _midpointSeed = (int)numMidSeed.Value; ResetMidpoint(false); };
+            numMidStartPoint.ValueChanged += (s, e) => { _midpoint.StartHeight = (float)numMidStartPoint.Value; ResetMidpoint(true); };
+            numMidEndPoint.ValueChanged += (s, e) => { _midpoint.EndHeight = (float)numMidEndPoint.Value; ResetMidpoint(true); };
+            btnMidReset.Click += (s, e) => ResetMidpoint(true);
+            btnMidStep.Click += (s, e) => { _midpoint.NextStep(); RedrawMidpoint(); };
+            btnMidRun.Click += (s, e) => { _midpoint.RunToEnd(); RedrawMidpoint(); };
+            panelMidCanvas.Paint += MidCanvas_Paint;
+            panelMidCanvas.Resize += (s, e) => RedrawMidpoint();
+
+            RedrawMidpoint();
+            //============================================
         }
 
         // МЕТОДЫ ДЛЯ L-СИСТЕМ 
@@ -167,6 +202,7 @@ namespace LSystemApp
 
             var interp = new TurtleInterpreter(_system, step: 1.0);
             interp.Interpret(command);
+            _lastInterp = interp;
 
             _segments = interp.FitToBounds(panelCanvas.ClientRectangle, 15f);
 
@@ -179,13 +215,125 @@ namespace LSystemApp
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.Clear(Color.White);
 
+
+            //============Бочарова========================
+            if (chkTreeStyle.Checked && _lastInterp != null)
+                DrawStyledTree(e.Graphics);
+            else
+                DrawPlain(e.Graphics);
+        }
+
+        private void DrawPlain(Graphics g)
+        {
             using (var pen = new Pen(Color.FromArgb(135, 206, 235), 1.5f))
             {
                 foreach (var seg in _segments)
-                {
                     if (seg.Length >= 2)
-                        e.Graphics.DrawLines(pen, seg);
-                }
+                        g.DrawLines(pen, seg);
+            }
+        }
+
+        private void DrawStyledTree(Graphics g)
+        {
+            int maxDepth = Math.Max(1, _lastInterp.MaxDepth);
+            const float baseWidth = 4.0f;
+            const float tipWidth = 0.6f;
+            Color baseColor = Color.FromArgb(101, 67, 33);   // коричневый
+            Color tipColor = Color.FromArgb(34, 139, 34);   // зелёный
+
+            int count = Math.Min(_segments.Count, _lastInterp.Depths.Count);
+            for (int i = 0; i < count; i++)
+            {
+                var seg = _segments[i];
+                if (seg.Length < 2) continue;
+
+                float t = _lastInterp.Depths[i] / (float)maxDepth;  // 0 = ствол, 1 = кончик
+                float width = baseWidth + (tipWidth - baseWidth) * t;
+                Color color = LerpColor(baseColor, tipColor, t);
+
+                using (var pen = new Pen(color, width) { StartCap = LineCap.Round, EndCap = LineCap.Round })
+                    g.DrawLines(pen, seg);
+            }
+        }
+
+        private static Color LerpColor(Color a, Color b, float t)
+        {
+            t = Math.Clamp(t, 0f, 1f);
+            return Color.FromArgb(
+                (int)(a.R + (b.R - a.R) * t),
+                (int)(a.G + (b.G - a.G) * t),
+                (int)(a.B + (b.B - a.B) * t));
+        }
+
+        private void panelControls_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void labelMidStartPoint_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ResetMidpoint(bool needToRedrawMidpoint)
+        {
+            _midpoint.Reset(_midpointSeed);
+
+            if (needToRedrawMidpoint) RedrawMidpoint();
+        }
+
+        private void RedrawMidpoint()
+        {
+            if (panelMidCanvas == null || _midpoint == null) return;
+            lblMidInfo.Text = $"Шаг: {_midpoint.Level} / {_midpoint.MaxLevels}, точек: {_midpoint.Points.Count}";
+            panelMidCanvas.Invalidate();
+        }
+
+        private void MidCanvas_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            e.Graphics.Clear(Color.White);
+
+            var pts = _midpoint.Points;
+            if (pts.Count < 2) return;
+
+            int w = panelMidCanvas.ClientSize.Width;
+            int h = panelMidCanvas.ClientSize.Height;
+            int margin = 20;
+
+            float stepX = (w - 2f * margin) / (pts.Count - 1);
+            float drawH = h - 2f * margin;        // доступная высота
+            float baseY = h - margin;             // линия земли (value = 0)
+
+            var points = new PointF[pts.Count];
+            for (int i = 0; i < pts.Count; i++)
+            {
+                float x = margin + i * stepX;
+                // clamp на случай выхода за пределы из-за roughness
+                float v = Math.Clamp(pts[i], 0f, 1f);
+                float y = baseY - v * drawH;
+                points[i] = new PointF(x, y);
+            }
+
+            // Заливка под ломаной — «горы» (до линии земли)
+            using (var fillBrush = new SolidBrush(Color.FromArgb(60, 100, 149, 237)))
+            {
+                var poly = new PointF[points.Length + 2];
+                Array.Copy(points, poly, points.Length);
+                poly[points.Length] = new PointF(points[points.Length - 1].X, baseY);
+                poly[points.Length + 1] = new PointF(points[0].X, baseY);
+                e.Graphics.FillPolygon(fillBrush, poly);
+            }
+
+            using (var pen = new Pen(Color.FromArgb(50, 80, 160), 1.5f))
+                e.Graphics.DrawLines(pen, points);
+
+            // Крайние точки (только две — концы)
+            using (var dot = new SolidBrush(Color.Red))
+            {
+                e.Graphics.FillEllipse(dot, points[0].X - 3f, points[0].Y - 3f, 6, 6);
+                e.Graphics.FillEllipse(dot, points[points.Length - 1].X - 3f,
+                                       points[points.Length - 1].Y - 3f, 6, 6);
             }
         }
 
@@ -282,5 +430,7 @@ namespace LSystemApp
         {
             _draggingBezierPointIndex = -1;
         }
+
+        //============================================
     }
 }
