@@ -31,3 +31,4 @@ D:\КОМПЬЮТЕРНАЯ ГРАФИКА\L-systems\L-systems.The-midpoint-disp
 D:\КОМПЬЮТЕРНАЯ ГРАФИКА\L-systems\L-systems.The-midpoint-displacement-algorithm.Bezier-curves\lab5\lab5\obj\Debug\net8.0-windows\lab5.pdb
 D:\КОМПЬЮТЕРНАЯ ГРАФИКА\L-systems\L-systems.The-midpoint-displacement-algorithm.Bezier-curves\lab5\lab5\obj\Debug\net8.0-windows\lab5.genruntimeconfig.cache
 D:\КОМПЬЮТЕРНАЯ ГРАФИКА\L-systems\L-systems.The-midpoint-displacement-algorithm.Bezier-curves\lab5\lab5\obj\Debug\net8.0-windows\ref\lab5.dll
+D:\mechmat\computer graphics\lab5\L-systems.The-midpoint-displacement-algorithm.Bezier-curves\lab5\lab5\obj\Debug\net8.0-windows\lab5.sourcelink.json

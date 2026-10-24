@@ -22,7 +22,7 @@ namespace LSystemApp
         private List<PointF> _bezierPoints = new List<PointF>();
         private int _draggingBezierPointIndex = -1;
 
-        // ── Встроенные предустановки (из лекции) ────────────────────────
+        // Встроенные предустановки 
         private readonly Dictionary<string, string> _presets = new Dictionary<string, string>
         {
             ["Кривая Коха"] =
@@ -60,6 +60,11 @@ namespace LSystemApp
                 "Y->-FX+YFYF++YF+FX--FX-Y\n" +
                 "F->F",
 
+            ["Дерево со случайностью (@)"] =
+                "X 22.5 90\n" +
+                "X->F[@[-X]+X]\n" +
+                "F->FF", 
+
             ["Куст 1"] =
                 "F 22 90\n" +
                 "F->FF-[-F+F+F]+[+F-F-F]",
@@ -89,7 +94,7 @@ namespace LSystemApp
                 cmbPresets.Items.Add(key);
             cmbPresets.SelectedIndex = 0;
 
-            // ── Подписки на события для L-систем ───────────────────────
+            // Подписки на события для L-систем 
             cmbPresets.SelectedIndexChanged += (s, e) => LoadPreset();
 
             numIterations.ValueChanged += (s, e) =>
@@ -158,7 +163,7 @@ namespace LSystemApp
             string name = cmbPresets.SelectedItem?.ToString();
             if (name == null || !_presets.ContainsKey(name)) return;
 
-            // Парсим строку через временный файл — так проще всего переиспользовать парсер
+            // Парсим строку через временный файл
             string tempFile = Path.GetTempFileName();
             try
             {
@@ -215,7 +220,6 @@ namespace LSystemApp
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.Clear(Color.White);
 
-
             //============Бочарова========================
             if (chkTreeStyle.Checked && _lastInterp != null)
                 DrawStyledTree(e.Graphics);
@@ -225,7 +229,7 @@ namespace LSystemApp
 
         private void DrawPlain(Graphics g)
         {
-            using (var pen = new Pen(Color.FromArgb(135, 206, 235), 1.5f))
+            using (var pen = new Pen(Color.FromArgb(70, 150, 200), 1.5f))
             {
                 foreach (var seg in _segments)
                     if (seg.Length >= 2)
@@ -267,18 +271,15 @@ namespace LSystemApp
 
         private void panelControls_Paint(object sender, PaintEventArgs e)
         {
-
         }
 
         private void labelMidStartPoint_Click(object sender, EventArgs e)
         {
-
         }
 
         private void ResetMidpoint(bool needToRedrawMidpoint)
         {
             _midpoint.Reset(_midpointSeed);
-
             if (needToRedrawMidpoint) RedrawMidpoint();
         }
 
@@ -430,7 +431,5 @@ namespace LSystemApp
         {
             _draggingBezierPointIndex = -1;
         }
-
-        //============================================
     }
 }

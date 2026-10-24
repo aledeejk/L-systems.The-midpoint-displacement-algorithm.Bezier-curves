@@ -4,16 +4,6 @@ using System.Drawing;
 
 namespace LSystemApp
 {
-    /// <summary>
-    /// Интерпретатор L-системы методом "черепашьей графики".
-    ///
-    /// Рисующие символы: F, G, A, B  — проводят отрезок вперёд.
-    /// Перемещающие без рисования: f, g — двигают черепаху без рисования.
-    /// Управление: + (поворот влево), - (поворот вправо), | (поворот на 180°).
-    /// Стек: [ — сохранить состояние, ] — восстановить состояние.
-    /// Прочие символы (X, Y и т.п.) игнорируются — они лишь вспомогательные
-    /// переменные для правил подстановки.
-    /// </summary>
     public class TurtleInterpreter
     {
         private readonly LSystem _system;
@@ -25,7 +15,6 @@ namespace LSystemApp
         //============Бочарова 1.б========================
         public List<int> Depths { get; } = new List<int>(); // глубина каждого отрезка
         public int MaxDepth { get; private set; } = 0;
-
         //================================================
 
         public TurtleInterpreter(LSystem system, double step = 1.0)
@@ -60,8 +49,10 @@ namespace LSystemApp
                     case 'G':
                     case 'A':
                     case 'B':
+                    case 'X':
+                    case 'Y':
                         {
-                            double nx = x + _step * Math.Cos(dir);
+                            double nx = x + _step * Math.Cos(dir); //полярные координаты
                             double ny = y + _step * Math.Sin(dir);
                             Segments.Add(new[]
                             {
@@ -96,16 +87,22 @@ namespace LSystemApp
                         dir += Math.PI;
                         break;
 
-                    // ── Стек состояний ─────────────────────────────────
+                    // ── СТЕК ───────────────────────────────────────────
                     case '[':
                         stack.Push((x, y, dir));
                         break;
                     case ']':
                         if (stack.Count > 0)
                         {
-                            var s = stack.Pop();
+                            var s = stack.Pop(); //для ветвления кустов и деревьев
                             x = s.x; y = s.y; dir = s.dir;
                         }
+                        break;
+
+                    // ── СЛУЧАЙНОСТЬ @ ──────────────────────────────────
+                    case '@':
+                        double randomOffset = (_rand.NextDouble() * 30.0 - 15.0) * Math.PI / 180.0;
+                        dir += randomOffset;
                         break;
 
                     // Все прочие символы (X, Y и т.п.) игнорируются.
@@ -123,16 +120,12 @@ namespace LSystemApp
             return baseAngle + delta;
         }
 
-        /// <summary>
-        /// Масштабирование и центрирование отрезков внутри bounds.
-        /// Инвертирует ось Y (экранные координаты растут вниз).
-        /// </summary>
         public List<PointF[]> FitToBounds(RectangleF bounds, float margin = 10f)
         {
             var result = new List<PointF[]>(Segments.Count);
             if (Segments.Count == 0) return result;
 
-            // 1. Находим габариты всех точек
+            // Находим габариты всех точек
             float minX = float.MaxValue, minY = float.MaxValue;
             float maxX = float.MinValue, maxY = float.MinValue;
 
@@ -145,30 +138,31 @@ namespace LSystemApp
                     if (p.Y > maxY) maxY = p.Y;
                 }
 
+            //защита от нулевых
             float w = maxX - minX;
             float h = maxY - minY;
             if (w <= 1e-6f) w = 1;
             if (h <= 1e-6f) h = 1;
 
-            float availW = bounds.Width - 2 * margin;
+            float availW = bounds.Width - 2 * margin; //отступ от краев
             float availH = bounds.Height - 2 * margin;
             if (availW <= 0) availW = 1;
             if (availH <= 0) availH = 1;
 
-            float scale = Math.Min(availW / w, availH / h);
+            float scale = Math.Min(availW / w, availH / h); //минимум, чтобы не вылез за границы окна
 
             // Смещение для центрирования
             float offsetX = (availW - w * scale) / 2f;
             float offsetY = (availH - h * scale) / 2f;
 
-            // 2. Переносим точки в экранные координаты
+            // Переносим точки в экранные координаты
             foreach (var seg in Segments)
             {
                 var newSeg = new PointF[seg.Length];
                 for (int i = 0; i < seg.Length; i++)
                 {
                     float sx = bounds.Left + margin + offsetX + (seg[i].X - minX) * scale;
-                    // Инвертируем Y: логический Y вверх → экранный Y вниз
+                    // Инвертируем Y: логический Y вверх -> экранный Y вниз
                     float sy = bounds.Bottom - margin - offsetY - (seg[i].Y - minY) * scale;
                     newSeg[i] = new PointF(sx, sy);
                 }
