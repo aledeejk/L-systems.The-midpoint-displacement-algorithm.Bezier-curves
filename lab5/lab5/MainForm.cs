@@ -13,6 +13,7 @@ namespace LSystemApp
         private List<PointF[]> _segments = new List<PointF[]>();
         private int _iterations = 4;
         private double _randomness = 0.0;
+        private double _stepDecay = 0.75;
 
         //============Бочарова 1.б========================
         private TurtleInterpreter _lastInterp;
@@ -62,8 +63,7 @@ namespace LSystemApp
 
             ["Дерево со случайностью (@)"] =
                 "X 22.5 90\n" +
-                "X->F[@[-X]+X]\n" +
-                "F->FF", 
+                "X->F[@[-X]+X]\n",
 
             ["Куст 1"] =
                 "F 22 90\n" +
@@ -205,7 +205,10 @@ namespace LSystemApp
 
             string command = _system.Generate(_iterations);
 
-            var interp = new TurtleInterpreter(_system, step: 1.0);
+            var interp = new TurtleInterpreter(_system, step: 1.0)
+            {
+                StepDecay = cmbPresets.SelectedItem?.ToString() == "Дерево со случайностью (@)" ? 0.85 : 1.0
+            };
             interp.Interpret(command);
             _lastInterp = interp;
 
@@ -430,6 +433,11 @@ namespace LSystemApp
         private void PanelBezierCanvas_MouseUp(object? sender, MouseEventArgs e)
         {
             _draggingBezierPointIndex = -1;
+        }
+
+        private void numIterations_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

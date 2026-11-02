@@ -15,6 +15,8 @@ namespace LSystemApp
         //============Бочарова 1.б========================
         public List<int> Depths { get; } = new List<int>(); // глубина каждого отрезка
         public int MaxDepth { get; private set; } = 0;
+
+        public double StepDecay { get; set; } = 0.75;
         //================================================
 
         public TurtleInterpreter(LSystem system, double step = 1.0)
@@ -37,6 +39,7 @@ namespace LSystemApp
             // Начальное состояние черепахи
             double x = 0, y = 0;
             double dir = _system.InitialDirection * Math.PI / 180.0;
+            double currentStep = _step;
 
             var stack = new Stack<(double x, double y, double dir)>();
 
@@ -52,8 +55,8 @@ namespace LSystemApp
                     case 'X':
                     case 'Y':
                         {
-                            double nx = x + _step * Math.Cos(dir); //полярные координаты
-                            double ny = y + _step * Math.Sin(dir);
+                            double nx = x + currentStep * Math.Cos(dir);  //полярные координаты
+                            double ny = y + currentStep * Math.Sin(dir);
                             Segments.Add(new[]
                             {
                                 new PointF((float)x, (float)y),
@@ -71,8 +74,8 @@ namespace LSystemApp
                     case 'f':
                     case 'g':
                         {
-                            x += _step * Math.Cos(dir);
-                            y += _step * Math.Sin(dir);
+                            x += currentStep * Math.Cos(dir);
+                            y += currentStep * Math.Sin(dir);
                             break;
                         }
 
@@ -90,12 +93,14 @@ namespace LSystemApp
                     // ── СТЕК ───────────────────────────────────────────
                     case '[':
                         stack.Push((x, y, dir));
+                        currentStep *= StepDecay;
                         break;
                     case ']':
                         if (stack.Count > 0)
                         {
                             var s = stack.Pop(); //для ветвления кустов и деревьев
                             x = s.x; y = s.y; dir = s.dir;
+                            currentStep /= StepDecay;
                         }
                         break;
 
