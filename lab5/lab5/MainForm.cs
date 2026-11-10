@@ -362,23 +362,36 @@ namespace LSystemApp
             }
 
             // 2. Рисуем саму кривую Безье
-            if (_bezierPoints.Count >= 4)
+            if (_bezierPoints.Count >= 2)
             {
                 using (Pen curvePen = new Pen(Color.Blue, 3))
                 {
-                    for (int i = 0; i <= _bezierPoints.Count - 4; i++)
+                    // Рисуем основные сегменты по 4 точки (шаг 3)
+                    for (int i = 0; i + 3 < _bezierPoints.Count; i += 3)
                     {
-                        g.DrawBezier(curvePen, _bezierPoints[i], _bezierPoints[i + 1], _bezierPoints[i + 2], _bezierPoints[i + 3]);
+                        g.DrawBezier(curvePen,
+                            _bezierPoints[i],
+                            _bezierPoints[i + 1],
+                            _bezierPoints[i + 2],
+                            _bezierPoints[i + 3]);
                     }
-                }
-            }
-            else if (_bezierPoints.Count > 1)
-            {
-                using (Pen simplePen = new Pen(Color.Blue, 2))
-                {
-                    for (int i = 0; i < _bezierPoints.Count - 1; i++)
+
+                    // Обработка "хвоста" - если остались лишние точки
+                    int tailIndex = (_bezierPoints.Count - 1) / 3 * 3; // Начало хвоста (последняя точка предыдущей кривой)
+                    int remaining = _bezierPoints.Count - tailIndex;
+
+                    if (remaining == 2)
                     {
-                        g.DrawLine(simplePen, _bezierPoints[i], _bezierPoints[i + 1]);
+                        // У нас есть конец предыдущей кривой (tailIndex) и 1 новая точка.
+                        // Чтобы нарисовать плавное продолжение, создаем 2 виртуальные контрольные точки.
+                        PointF p0 = _bezierPoints[tailIndex];
+                        PointF p3 = _bezierPoints[tailIndex + 1];
+
+                        // Вычисляем направление (продолжаем прямую)
+                        PointF p1 = new PointF(p0.X + (p3.X - p0.X) / 3f, p0.Y + (p3.Y - p0.Y) / 3f);
+                        PointF p2 = new PointF(p0.X + 2 * (p3.X - p0.X) / 3f, p0.Y + 2 * (p3.Y - p0.Y) / 3f);
+
+                        g.DrawBezier(curvePen, p0, p1, p2, p3);
                     }
                 }
             }
